@@ -2,7 +2,7 @@ name: deploy
 
 on:
   workflow_run:
-    workflows: ["tests", "linter"]
+    workflows: ["tests"]
     types:
       - completed
     branches:
@@ -35,6 +35,5 @@ jobs:
             php artisan down
             php artisan optimize:clear
             php artisan migrate --force
-
             php artisan optimize
             php artisan up
