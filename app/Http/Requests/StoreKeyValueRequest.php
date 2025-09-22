@@ -3,7 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use OpenApi\Attributes as OA;
 
+#[OA\RequestBody(
+    request: 'StoreKeyValueRequest',
+    required: true,
+    content: new OA\JsonContent(properties: [
+        new OA\Property(type: 'object'),
+    ]),
+)]
 class StoreKeyValueRequest extends FormRequest
 {
     public function authorize(): bool
@@ -32,7 +40,7 @@ class StoreKeyValueRequest extends FormRequest
                     'value' => rescue(fn () => json_encode($value, JSON_THROW_ON_ERROR), null, false),
                 ])
                 ->values()
-                ->all()
+                ->all(),
         ]);
     }
 }

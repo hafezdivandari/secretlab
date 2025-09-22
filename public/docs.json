@@ -1,0 +1,187 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Secretlab Tech Exercise",
+        "contact": {
+            "name": "Hafez Divandari",
+            "email": "hafezdivandari@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://secretlab.hafezd.com/api",
+            "description": "Staging server"
+        },
+        {
+            "url": "https://secretlab.test/api",
+            "description": "Staging server"
+        },
+        {
+            "url": "http://127.0.0.1:8000/api",
+            "description": "Localhost"
+        }
+    ],
+    "paths": {
+        "/object/get_all_records": {
+            "get": {
+                "operationId": "394cefd9eff6cb6164b0d997f5ebd973",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/KeyValueCollection"
+                    }
+                }
+            }
+        },
+        "/object": {
+            "post": {
+                "operationId": "503adc4b3630e5cb56a89a3f4fb22ffd",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/StoreKeyValueRequest"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "default": null,
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/InvalidData"
+                    }
+                }
+            }
+        },
+        "/object/{key}": {
+            "get": {
+                "operationId": "0aa0a002d2f90716b7c126db4e520a18",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "The key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "timestamp",
+                        "in": "query",
+                        "description": "The timestamp",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/KeyValueResource"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "default": null,
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/InvalidData"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "KeyValueResource": {
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "object"
+                    },
+                    "timestamp": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "InvalidData": {
+                "description": "The invalid data response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "KeyValueCollection": {
+                "description": "The collection of key-values",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/KeyValueResource"
+                            }
+                        }
+                    }
+                }
+            },
+            "KeyValueResource": {
+                "description": "The key-value response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/components/schemas/KeyValueResource"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "requestBodies": {
+            "StoreKeyValueRequest": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "": {
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
