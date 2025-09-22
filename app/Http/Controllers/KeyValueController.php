@@ -24,7 +24,7 @@ class KeyValueController extends Controller
 
     public function store(StoreKeyValueRequest $request)
     {
-        $keyValues = $request->validated();
+        $keyValues = $request->validated()['data'];
 
         KeyValue::query()->insert($keyValues);
 
